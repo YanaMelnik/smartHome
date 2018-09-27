@@ -11,14 +11,14 @@ export default class DeviceEdit extends PureComponent {
         const { id } = this.props.match.params;
 
         this.setState({
-            device: await getDeviceById(parseInt(id, 10))
+            device: await getDeviceById(id)
         });
     };
 
     handleFormSubmit = async (device) => {
         const { id } = this.props.match.params;
 
-        await updateDevice(parseInt(id, 10), device);
+        await updateDevice(id, device);
         window.history.back();
     };
 
