@@ -12,11 +12,7 @@ export async function getDeviceById(deviceId) {
 }
 
 export async function addDevice(device) {
-    const response = await  axios.post(`${serverUrl}/devices`, device);
-    if (response.status !== 201) {
-        throw new Error('Devices is not created');
-    }
-    return response.data;
+    await axios.post(`${serverUrl}/devices`, device);
 }
 
 export async function removeDevice(deviceId) {
@@ -27,22 +23,45 @@ export async function updateDevice(deviceId, data) {
    await axios.put(`${serverUrl}/devices/${deviceId}`, data);
 }
 
-export async function switchOn(deviceId, data) {
-    await axios.put(`${serverUrl}/devices/${deviceId}/on`, data)
+export async function switchOn(deviceId) {
+    await axios.put(`${serverUrl}/devices/${deviceId}/on`);
 }
 
-export async function switchOff(deviceId, data) {
-    await axios.put(`${serverUrl}/devices/${deviceId}/off`, data);
+export async function switchOff(deviceId) {
+    await axios.put(`${serverUrl}/devices/${deviceId}/off`);
 }
 
 export async function getDeviceLog(deviceId) {
-    return [
-        {
-            date: '2018-31-08 16:00:00',
-            action: 'On'
-        },
-        {
-            date: '2018-31-08 17:00:00',
-            action: 'Off'
-        }]
+    const response = await axios.get(`${serverUrl}/devices/${deviceId}/log`);
+    return response.data;
+}
+
+export async function getGroups() {
+    const response = await axios.get(`${serverUrl}/groups`);
+    return response.data;
+}
+
+export async function addGroup(group) {
+    await axios.post(`${serverUrl}/groups`, group)
+}
+
+export async function removeGroup(groupId) {
+    await axios.delete(`${serverUrl}/groups/${groupId}`);
+}
+
+export async function getGroupById(groupId) {
+    const response = await axios.get(`${serverUrl}/groups/${groupId}`);
+    return response.data;
+}
+
+export async function updateGroup(groupId, data) {
+    await axios.put(`${serverUrl}/groups/${groupId}`, data)
+}
+
+export async function switchOnGroup(groupId) {
+    await axios.put(`${serverUrl}/groups/${groupId}/on`);
+}
+
+export async function switchOffGroup(groupId) {
+    await axios.put(`${serverUrl}/groups/${groupId}/off`);
 }

@@ -1,32 +1,31 @@
 import React, { PureComponent } from 'react';
-import DeviceForm from '../components/DeviceForm';
-import { getDeviceById, updateDevice, getGroups } from '../api';
+import GroupForm from '../components/GroupForm';
+import { getGroupById, updateGroup } from '../api';
 
-export default class DeviceEdit extends PureComponent {
+export default class GroupEdit extends PureComponent {
     state = {
-        device: null
+        group: null
     };
 
     componentDidMount = async () => {
         const { id } = this.props.match.params;
 
         this.setState({
-            device: await getDeviceById(id),
-            groups: await getGroups()
+            group: await getGroupById(id)
         });
     };
 
-    handleFormSubmit = async (device) => {
+    handleFormSubmit = async (group) => {
         const { id } = this.props.match.params;
 
-        await updateDevice(id, device);
+        await updateGroup(id, group);
         window.history.back();
     };
 
     render() {
-        const { device, groups } = this.state;
+        const { group } = this.state;
 
-        if (!device) {
+        if (!group) {
             return null;
         }
 
@@ -37,8 +36,8 @@ export default class DeviceEdit extends PureComponent {
                         <nav aria-label="breadcrumb">
                             <ol className="breadcrumb">
                                 <li className="breadcrumb-item"><a href="#/">Home</a></li>
-                                <li className="breadcrumb-item"><a href="#/devices">Devices</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">Edit device</li>
+                                <li className="breadcrumb-item"><a href="#/groups">Groups</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Edit group</li>
                             </ol>
                         </nav>
                     </div>
@@ -46,7 +45,7 @@ export default class DeviceEdit extends PureComponent {
 
                 <div className="row">
                     <div className="col">
-                        <DeviceForm onSubmit={this.handleFormSubmit} device={device} groups={groups} />
+                        <GroupForm onSubmit={this.handleFormSubmit} group={group} />
                     </div>
                 </div>
             </div>

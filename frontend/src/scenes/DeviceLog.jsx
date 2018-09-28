@@ -11,7 +11,7 @@ export default class DeviceLog extends PureComponent {
         const { id } = this.props.match.params;
 
         this.setState({
-            device: await getDeviceById(parseInt(id, 10)),
+            device: await getDeviceById(id),
             log: await getDeviceLog(id)
         });
     };

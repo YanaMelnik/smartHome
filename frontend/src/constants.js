@@ -7,3 +7,7 @@ export const devicePropType = PropTypes.shape({
     port: PropTypes.number.isRequired,
     state: PropTypes.oneOf(['on', 'off'])
 });
+
+export const groupPropType = PropTypes.shape({
+    name: PropTypes.string.isRequired
+});

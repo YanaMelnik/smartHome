@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import { devicePropType } from '../constants';
 
 export default class DeviceForm extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            defaultValue: 'withoutgroup'
+        }
+    }
     handleCancelClick = () => {
         window.history.back();
     };
@@ -12,15 +19,27 @@ export default class DeviceForm extends PureComponent {
             ...this.props.device,
             name: event.target.deviceName.value,
             address: event.target.deviceAddress.value,
-            port: parseInt(event.target.devicePort.value, 10)
+            port: parseInt(event.target.devicePort.value, 10),
+            group: event.target.group.value
         });
 
         event.preventDefault();
     };
 
-    render() {
-        const {device} = this.props;
+    handleChange = ({ target: { value } }) => {
+        this.setState({ defaultValue: value })
+    };
 
+    setGroups = (groups) => groups.map(group => (<option value={group.id} key={group.id}>{group.name}</option>));
+
+    getDefaultValue = groups => {
+        const group = groups.find(group => group.devices.includes(this.props.device.id));
+        return group ? group.id : this.state.defaultValue;
+    };
+
+    render() {
+        const { device, groups = [] } = this.props;
+        const { defaultValue } = this.state;
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
@@ -54,6 +73,18 @@ export default class DeviceForm extends PureComponent {
                            placeholder="Port"
                            required
                            defaultValue={device.port}/>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="group">Choose group</label>
+                    <select
+                        className="form-control"
+                        id="group" name="group"
+                        defaultValue={this.getDefaultValue(groups)}
+                        onChange={this.handleChange} >
+                        <option value={defaultValue}>Without group</option>
+                        {this.setGroups(groups)}
+                    </select>
                 </div>
 
                 <div className="float-right">
